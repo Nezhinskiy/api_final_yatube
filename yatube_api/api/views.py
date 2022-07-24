@@ -3,9 +3,10 @@ from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (CommentSerializer, FollowSerializer,
                              GroupSerializer, PostSerializer)
 from django.shortcuts import get_object_or_404
-from posts.models import Comment, Follow, Group, Post
 from rest_framework import filters, permissions, viewsets
 from rest_framework.throttling import AnonRateThrottle
+
+from posts.models import Comment, Follow, Group, Post
 
 
 class CustomViewSet(viewsets.ModelViewSet):

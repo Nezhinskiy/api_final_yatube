@@ -5,7 +5,7 @@ class CustomPagination(LimitOffsetPagination):
 
     def paginate_queryset(self, queryset, request, view=None):
         self.limit = self.get_limit(request)
-        if self.limit == None:
+        if self.limit is None:
             return None
 
         self.count = self.get_count(queryset)
