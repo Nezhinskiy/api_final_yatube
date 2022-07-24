@@ -90,10 +90,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ],
-
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
@@ -106,9 +102,6 @@ REST_FRAMEWORK = {
         'user': '10000/day',
         'anon': '1000/day',
     },
-
-    # 'DEFAULT_PAGINATION_CLASS': 'api.pagination.CustomPagination',
-    # 'PAGE_SIZE': 10,
 }
 
 SIMPLE_JWT = {
