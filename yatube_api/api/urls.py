@@ -12,4 +12,6 @@ router.register(r'groups', GroupViewSet, basename='groups')
 
 urlpatterns = [
     path('v1/', include(router.urls), name='post'),
+    path('v1/', include('djoser.urls')),
+    path('v1/', include('djoser.urls.jwt')),
 ]

@@ -95,6 +95,14 @@ class Comment(models.Model):
         db_index=True
     )
 
+    class Meta:
+        ordering = ['created']
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+
+    def __str__(self):
+        return self.text[:DISPLAYED_LETTERS]
+
 
 class Follow(models.Model):
     user = models.ForeignKey(

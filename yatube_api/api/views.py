@@ -15,8 +15,8 @@ class CustomViewSet(viewsets.ModelViewSet):
     throttle_classes = (AnonRateThrottle,)
     filter_backends = (DjangoFilterBackend, filters.SearchFilter,
                        filters.OrderingFilter)
-    pagination_class = LimitOffsetPagination
-    filterset_fields = ('author', 'group', 'pub_date')
+    pagination_class = CustomPagination
+    filterset_fields = ('author',)
     search_fields = ('text',)
     ordering_fields = '__all__'
 
