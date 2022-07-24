@@ -22,7 +22,7 @@ class CustomViewSet(viewsets.ModelViewSet):
 
 
 class PostViewSet(CustomViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.select_related('author').all()
     serializer_class = PostSerializer
 
     def perform_create(self, serializer):
@@ -30,7 +30,8 @@ class PostViewSet(CustomViewSet):
 
 
 class CommentViewSet(CustomViewSet):
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.select_related('post', 'author',
+                                              'post_author').all()
     serializer_class = CommentSerializer
 
     def get_queryset(self):
@@ -46,12 +47,12 @@ class CommentViewSet(CustomViewSet):
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Group.objects.all()
+    queryset = Group.objects.prefetch_related('posts').all()
     serializer_class = GroupSerializer
 
 
 class FollowViewSet(viewsets.ModelViewSet):
-    queryset = Follow.objects.all()
+    queryset = Follow.objects.prefetch_related('posts').all()
     serializer_class = FollowSerializer
     permission_classes = (permissions.IsAuthenticated,)
     filter_backends = (filters.SearchFilter,)
