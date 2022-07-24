@@ -19,13 +19,13 @@ class CustomViewSet(viewsets.ModelViewSet):
     search_fields = ('text',)
     ordering_fields = '__all__'
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
 
 class PostViewSet(CustomViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 class CommentViewSet(CustomViewSet):
@@ -35,8 +35,13 @@ class CommentViewSet(CustomViewSet):
     def get_queryset(self):
         post_id = self.kwargs.get('post_id')
         post = get_object_or_404(Post, pk=post_id)
-        new_queryset = post.comments.all()
-        return new_queryset
+        return post.comments.all()
+
+    def perform_create(self, serializer):
+        post_id = self.kwargs.get('post_id')
+        post = get_object_or_404(Post, pk=post_id)
+        serializer.save(author=self.request.user,
+                        post=post)
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
