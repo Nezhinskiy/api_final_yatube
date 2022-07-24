@@ -6,6 +6,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from posts.models import Comment, Group, Post
 from rest_framework import filters, permissions, viewsets
 from rest_framework.throttling import AnonRateThrottle
+from rest_framework.pagination import LimitOffsetPagination
 
 
 class CustomViewSet(viewsets.ModelViewSet):
@@ -14,10 +15,10 @@ class CustomViewSet(viewsets.ModelViewSet):
     throttle_classes = (AnonRateThrottle,)
     filter_backends = (DjangoFilterBackend, filters.SearchFilter,
                        filters.OrderingFilter)
-    pagination_class = CustomPagination
+    pagination_class = LimitOffsetPagination
     filterset_fields = ('author', 'group', 'pub_date')
     search_fields = ('text',)
-    ordering_fields = ('pub_date', 'author')
+    ordering_fields = '__all__'
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
