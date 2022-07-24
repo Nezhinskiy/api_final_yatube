@@ -1,22 +1,21 @@
 from api.pagination import CustomPagination
 from api.permissions import IsAuthorOrReadOnly
-from api.serializers import CommentSerializer, GroupSerializer, PostSerializer
+from api.serializers import (CommentSerializer, FollowSerializer,
+                             GroupSerializer, PostSerializer)
 from django.shortcuts import get_object_or_404
-from django_filters.rest_framework import DjangoFilterBackend
-from posts.models import Comment, Group, Post
+from posts.models import Comment, Follow, Group, Post
 from rest_framework import filters, permissions, viewsets
 from rest_framework.throttling import AnonRateThrottle
-from rest_framework.pagination import LimitOffsetPagination
 
 
 class CustomViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsAuthorOrReadOnly)
     throttle_classes = (AnonRateThrottle,)
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter,
+    filter_backends = (filters.SearchFilter,
                        filters.OrderingFilter)
-    pagination_class = LimitOffsetPagination
-    filterset_fields = ('author', 'group', 'pub_date')
+    pagination_class = CustomPagination
+    filterset_fields = ('author',)
     search_fields = ('text',)
     ordering_fields = '__all__'
 
@@ -43,3 +42,18 @@ class CommentViewSet(CustomViewSet):
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+
+class FollowViewSet(viewsets.ModelViewSet):
+    queryset = Follow.objects.all()
+    serializer_class = FollowSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('following__username',)
+
+    def get_queryset(self):
+        return self.request.user.follower.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+

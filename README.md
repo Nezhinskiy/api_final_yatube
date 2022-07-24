@@ -1,18 +1,10 @@
 # api_final
 api final
-af
+Д
+о
+п
+и
+ш
+у
 
-sdgsd
-g
-
-sgd
-sd
-g
-sdg
-sdg
-
-d
-
-
-sgd
-dg
+позже
