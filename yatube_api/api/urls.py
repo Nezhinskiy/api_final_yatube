@@ -4,16 +4,14 @@ from rest_framework import routers
 
 app_name = 'api'
 
-router = routers.DefaultRouter()
-router.register(r'posts', PostViewSet, basename='posts')
-router.register(r'posts/(?P<post_id>\d+)/comments',
-                CommentViewSet, basename='comments')
-router.register(r'groups', GroupViewSet, basename='groups')
-router.register(r'follow', FollowViewSet, basename='follow')
-
+router_v1 = routers.DefaultRouter()
+router_v1.register(r'posts', PostViewSet, basename='posts')
+router_v1.register(r'posts/(?P<post_id>\d+)/comments',
+                   CommentViewSet, basename='comments')
+router_v1.register(r'groups', GroupViewSet, basename='groups')
+router_v1.register(r'follow', FollowViewSet, basename='follow')
 
 urlpatterns = [
-    path('v1/', include(router.urls), name='post'),
-    path('v1/', include('djoser.urls')),
+    path('v1/', include(router_v1.urls), name='post'),
     path('v1/', include('djoser.urls.jwt')),
 ]
