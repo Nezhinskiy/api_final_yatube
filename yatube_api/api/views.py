@@ -3,8 +3,7 @@ from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (CommentSerializer, FollowSerializer,
                              GroupSerializer, PostSerializer)
 from django.shortcuts import get_object_or_404
-from rest_framework import filters, mixins, permissions, viewsets
-from rest_framework.throttling import AnonRateThrottle
+from rest_framework import filters, mixins, permissions, throttling, viewsets
 
 from posts.models import Comment, Follow, Group, Post
 
@@ -14,7 +13,7 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsAuthorOrReadOnly)
-    throttle_classes = (AnonRateThrottle,)
+    throttle_classes = (throttling.AnonRateThrottle,)
     pagination_class = CustomPagination
     filter_backends = (filters.SearchFilter,
                        filters.OrderingFilter)
@@ -32,7 +31,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsAuthorOrReadOnly)
-    throttle_classes = (AnonRateThrottle,)
+    throttle_classes = (throttling.AnonRateThrottle,)
     filter_backends = (filters.SearchFilter,
                        filters.OrderingFilter)
     filterset_fields = ('author',)
@@ -63,6 +62,7 @@ class FollowViewSet(mixins.CreateModelMixin,
     serializer_class = FollowSerializer
     permission_classes = (permissions.IsAuthenticated,)
     pagination_class = CustomPagination
+    throttle_classes = (throttling.AnonRateThrottle,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('following__username',)
 
