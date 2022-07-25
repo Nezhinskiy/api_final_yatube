@@ -1,10 +1,10 @@
+from django.shortcuts import get_object_or_404
+from rest_framework import filters, mixins, permissions, throttling, viewsets
+
 from api.pagination import CustomPagination
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (CommentSerializer, FollowSerializer,
                              GroupSerializer, PostSerializer)
-from django.shortcuts import get_object_or_404
-from rest_framework import filters, mixins, permissions, throttling, viewsets
-
 from posts.models import Comment, Follow, Group, Post
 
 
